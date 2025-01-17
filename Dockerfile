@@ -5,6 +5,8 @@ ENV DEBIAN_FRONTEND=noninteractive \
 
 WORKDIR /usr/src/app
 
+RUN chmod 777 /usr/src/app
+
 # Install essential packages
 RUN apt-get update -qq && \
     apt-get install -qq -y apt-utils ffmpeg gcc libffi-dev sudo nano vim curl python3-venv python3-dev && \
@@ -13,7 +15,7 @@ RUN apt-get update -qq && \
 # Install build dependencies and rclone in a separate stage
 FROM base AS builder
 RUN apt-get update -qq && \
-    apt-get install -qq -y git wget unzip && \
+    apt-get install -qq -y git wget curl unzip && \
     rm -rf /var/lib/apt/lists/*
 
 # Download and install rclone
@@ -34,4 +36,3 @@ COPY requirements.txt .
 
 RUN pip install --no-cache-dir -r requirements.txt --break-system-packages && \
     rm requirements.txt
-
