@@ -30,4 +30,6 @@ FROM base AS final
 COPY --from=builder /usr/bin/rclone /usr/bin/rclone
 
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt --break-system-packages
+
+RUN pip install --no-cache-dir -r requirements.txt --break-system-packages && \
+    rm requirements.txt
