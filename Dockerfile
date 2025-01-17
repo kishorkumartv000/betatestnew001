@@ -35,6 +35,3 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt --break-system-packages && \
     rm requirements.txt
 
-COPY . .
-
-ENTRYPOINT ["python", "-m", "bot"]
