@@ -18,11 +18,13 @@ RUN apt-get update -qq && apt-get upgrade -qq -y && \
 # Download and install rclone
 RUN ARCH=$(uname -m) && \
     if [ "$ARCH" = "x86_64" ]; then ARCH="amd64"; \
-    elif [ "$ARCH" = "aarch64" ]; then ARCH="arm64"; fi && \
+    elif [ "$ARCH" = "aarch64" ]; then ARCH="arm64"; \
+    elif [ "$ARCH" = "armv7l" ]; then ARCH="arm-v7"; fi && \
     curl -O https://downloads.rclone.org/v1.68.2/rclone-v1.68.2-linux-${ARCH}.zip && \
-    unzip rclone-v1.68.2-linux-${ARCH}.zip && \
+    if [ -f rclone-v1.68.2-linux-${ARCH}.zip ]; then unzip rclone-v1.68.2-linux-${ARCH}.zip && \
     install -m 755 rclone-v1.68.2-linux-${ARCH}/rclone /usr/bin/rclone && \
-    rm -rf rclone-v1.68.2-linux-${ARCH}*
+    rm -rf rclone-v1.68.2-linux-${ARCH}*; \
+    else curl https://rclone.org/install.sh | bash; fi
 
 # Final stage with only necessary files
 FROM base AS final
