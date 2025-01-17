@@ -6,7 +6,10 @@ ENV DEBIAN_FRONTEND=noninteractive \
 WORKDIR /usr/src/app
 
 RUN apt-get update -qq && apt-get upgrade -qq -y && \
-    apt-get install -qq -y apt-utils python3.12 python3.12-venv python3.12-dev ffmpeg gcc libffi-dev sudo nano vim curl && \
+    apt-get install -qq -y apt-utils software-properties-common && \
+    add-apt-repository ppa:deadsnakes/ppa && \
+    apt-get update -qq && \
+    apt-get install -qq -y python3.12 python3.12-venv python3.12-dev ffmpeg gcc libffi-dev sudo nano vim curl && \
     curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py && \
     python3 get-pip.py && \
     rm get-pip.py && \
