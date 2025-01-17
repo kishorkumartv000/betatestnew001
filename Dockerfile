@@ -7,6 +7,7 @@ WORKDIR /usr/src/app
 
 RUN apt-get update -qq && apt-get upgrade -qq -y && \
     apt-get install -qq -y apt-utils python3 python3-venv python3-pip python3-dev ffmpeg gcc libffi-dev sudo nano vim curl python-is-python3 && \
+    apt-get install -qq -y build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev libncurses5-dev libncursesw5-dev xz-utils tk-dev liblzma-dev libgdbm-dev libdb5.3-dev libexpat1-dev libpcap-dev liblzma-dev && \
     rm -rf /var/lib/apt/lists/*
 
 # Install build dependencies and rclone in a separate stage
