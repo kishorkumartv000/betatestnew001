@@ -37,8 +37,8 @@ def __decrypt_string__(string):
 
 class BotSettings:
     def __init__(self):
-        self.deezer = False
-        self.qobuz = False
+        self.deezer = True
+        self.qobuz = True
         self.tidal = None
         self.admins = Config.ADMINS
 
