@@ -1,17 +1,18 @@
-FROM debian:latest AS base
+FROM python:3.12-slim AS base
 
 ENV DEBIAN_FRONTEND=noninteractive \
     TZ=Asia/Kolkata
 
 WORKDIR /usr/src/app
 
-RUN apt-get update -qq && apt-get upgrade -qq -y && \
-    apt-get install -qq -y apt-utils python3 python3-venv python3-pip python3-dev ffmpeg gcc libffi-dev sudo nano vim curl python-is-python3 && \
+# Install essential packages
+RUN apt-get update -qq && \
+    apt-get install -qq -y apt-utils ffmpeg gcc libffi-dev sudo nano vim curl python3-venv python3-dev && \
     rm -rf /var/lib/apt/lists/*
 
 # Install build dependencies and rclone in a separate stage
 FROM base AS builder
-RUN apt-get update -qq && apt-get upgrade -qq -y && \
+RUN apt-get update -qq && \
     apt-get install -qq -y git wget unzip && \
     rm -rf /var/lib/apt/lists/*
 
@@ -33,3 +34,7 @@ COPY requirements.txt .
 
 RUN pip install --no-cache-dir -r requirements.txt --break-system-packages && \
     rm requirements.txt
+
+COPY . .
+
+ENTRYPOINT ["python", "-m", "bot"]
