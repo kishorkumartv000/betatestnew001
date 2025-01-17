@@ -29,4 +29,4 @@ jobs:
           context: .
           platforms: linux/amd64, linux/arm64
           push: true
-          tags: ghcr.io/${{ github.repository }}:tvkkfmraiopython312slimjan20250539py312slimbaseimage
+          tags: ghcr.io/${{ github.repository }}:tvkkfmraiodebianlatestjan20250539debbaseimage
