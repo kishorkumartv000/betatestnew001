@@ -6,10 +6,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
 WORKDIR /usr/src/app
 
 RUN apt-get update -qq && apt-get upgrade -qq -y && \
-    apt-get install -qq -y apt-utils python3 python3-venv python3-dev ffmpeg gcc libffi-dev sudo nano vim curl python-is-python3 && \
-    curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py && \
-    python get-pip.py && \
-    rm get-pip.py && \
+    apt-get install -qq -y apt-utils python3 python3-venv python3-pip python3-dev ffmpeg gcc libffi-dev sudo nano vim curl python-is-python3 && \
     rm -rf /var/lib/apt/lists/*
 
 # Install build dependencies and rclone in a separate stage
@@ -34,7 +31,3 @@ COPY --from=builder /usr/bin/rclone /usr/bin/rclone
 
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt --break-system-packages
-
-COPY . .
-
-ENTRYPOINT ["python3", "-m", "bot"]
