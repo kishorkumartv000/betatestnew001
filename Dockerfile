@@ -1,18 +1,21 @@
-FROM python:3.12-slim AS base
+FROM debian:latest AS base
 
 ENV DEBIAN_FRONTEND=noninteractive \
     TZ=Asia/Kolkata
 
 WORKDIR /usr/src/app
 
-RUN apt-get update -qq && \
-    apt-get install -qq -y ffmpeg gcc libffi-dev && \
+RUN apt-get update -qq && apt-get upgrade -qq -y && \
+    apt-get install -qq -y apt-utils python3.12 python3.12-venv python3.12-dev ffmpeg gcc libffi-dev sudo nano vim curl && \
+    curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py && \
+    python3 get-pip.py && \
+    rm get-pip.py && \
     rm -rf /var/lib/apt/lists/*
 
 # Install build dependencies and rclone in a separate stage
 FROM base AS builder
-RUN apt-get update -qq && \
-    apt-get install -qq -y git wget curl unzip && \
+RUN apt-get update -qq && apt-get upgrade -qq -y && \
+    apt-get install -qq -y git wget unzip && \
     rm -rf /var/lib/apt/lists/*
 
 # Download and install rclone
@@ -30,8 +33,6 @@ FROM base AS final
 COPY --from=builder /usr/bin/rclone /usr/bin/rclone
 
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip3 install --no-cache-dir -r requirements.txt
 
 COPY . .
-
-ENTRYPOINT ["python", "-m", "bot"]
